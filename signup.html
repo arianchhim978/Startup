@@ -28,9 +28,14 @@
        <div id="box1">
         <div id="box2">
             <form>
-               <br> <input id="email" type="email" placeholder="Email"><br><br>
-                <input id="password" type="password" placeholder="Password"><br><br>
-                <button id="signin">Sign In</button>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button onclick="signInWithEmail()">Login</button>
+                <div id="google-login">
+                    <h2>Google Login</h2>
+                    <button onclick="signInWithGoogle()">Login with Google</button>
+                  </div>
+                
             </form>
 
         </div><div id="box3">
@@ -39,7 +44,8 @@
                 <input id="email" type="email" placeholder="Email"><br><br>
                 <input id="password"type="password" placeholder="Password">
                 <br><br>
-                <button id="register">Register</button>
+                <button onclick="registerWithEmail()">Register</button>
+                <button onclick="registerWithGoogle()">Register with Google</button>
             </form>
         </div>
        </div>
@@ -48,7 +54,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
-        <script src="index.js" async defer></script>
+        <script src="app.js" async defer></script>
     </body>
 </html>
 
