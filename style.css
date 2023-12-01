@@ -1,0 +1,87 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #f4f4f4;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100px;
+    margin-right: 20px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+li {
+    margin-right: 20px;
+    margin-bottom: 10px; /* Add space between navigation items */
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px; /* Adjust font size for better mobile readability */
+    font-family: 'Dancing Script', cursive;
+}
+
+#center {
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px; /* Adjust font size for better mobile readability */
+    padding-top: 50px; /* Adjust padding for better mobile spacing */
+}
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#box1 {
+    height: auto; /* Let the height adjust based on content */
+    width: 100%;
+    border: solid black;
+    display: flex;
+    border-radius: 8px;
+    margin: 20px 0; /* Add space around the box */
+}
+
+#box2, #box3 {
+    height: 300px;
+    width: 100%;
+    border: solid black;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Add space between the boxes */
+}
+
+form {
+    border-radius: 8px;
+}
