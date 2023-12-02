@@ -1,32 +1,53 @@
-ul{
-    list-style: none;
-    display:flex;
-    gap:20px;
-}
-header{
-    background-color: #1B262C;
-    padding-top: 40px;
-    padding-bottom:40px;
-}
-*{
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
     padding: 0;
-    margin:0;
-}
-a{
-    text-decoration: none;
-    color:#BBE1FA;
-}
-body{
-    background-color: #3282B8;
 }
 
-#Register{
-    margin-top:30px;
-    border-radius: 8px;
-    color:white;
-    background-color: #3282B8;
-    border :solid #3282B8;
+header {
+    background-color: #f4f4f4;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
+    justify-content: space-between;
+    align-items: center;
 }
-#signin{
-    
+
+.logo {
+    max-width: 100px;
+    margin-right: 20px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+li {
+    margin-right: 20px;
+    margin-bottom: 10px; /* Add space between navigation items */
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px; /* Adjust font size for better mobile readability */
+    font-family: 'Dancing Script', cursive;
+}#rsvp {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 600px; /* Adjust this width based on your design */
+}
+
+#guest {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
 }
