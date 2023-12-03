@@ -101,3 +101,6 @@ form {
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+#form{
+    margin-top:100px;
+    text-align: center;}
