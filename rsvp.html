@@ -1,44 +1,98 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <<![endif]-->
 <html>
-    <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:wght@100&family=Parisienne&family=Playfair+Display&family=Roboto:wght@100;400&display=swap" rel="stylesheet">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style1.css">
-    </head>
-    <body> 
-        <header>
-            <img src="logo.png" alt="Logo" class="logo">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="wedding.html">Wedding Planner</a></li>
-                <li><a href="rsvp.html">Rsvp</a></li>
-                <li><a href="signup.html">Sign Up /Login</a></li>
-            </ul>
-        </header>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:wght@100&family=Parisienne&family=Playfair+Display&family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+</head>
 
 
-<div id="rsvp">
-    <h1>RSVP</h1>
-    <input id="guest" placeholder="Guest Name">
-    <button id="addGuestButton">Add Guest</button>
-    <ul id="guestList"></ul>
-</div>
+<body onload="checkUser()">
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wedding.html">Wedding TodoList</a></li>
+            <li><a href="rsvp.html">Rsvp</a></li>
+            <li><a href="signup.html">Sign Up /Login</a></li>
+        </ul>
+    </header>
 
-<script src="rsvp.js"></script>
+    <div id="form">
+        <form id="rsvpForm">
+            <label>
+                <input type="email" id="rsvpEmail" placeholder="Your Email">
+            </label>
+            <label>
+                <input type="file" id="fileInput">
+            </label>
+            <button type="button" onclick="submitRSVP()">Submit RSVP</button>
+        </form>
+    </div>
+
+    <script>
+        function submitRSVP() {
+            const user = firebase.auth().currentUser;
+            const rsvpEmail = document.getElementById('rsvpEmail').value;
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            const storageRef = firebase.storage().ref('uploads/' + user.uid + '/' + file.name);
+            const uploadTask = storageRef.put(file);
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Progress tracking (if needed)
+                },
+                (error) => {
+                    console.error('Error uploading file:', error);
+                },
+                () => {
+                    const downloadURL = uploadTask.snapshot.ref.getDownloadURL();
+
+
+                    firebase.database().ref('rsvps/' + user.uid).set({
+                        email: rsvpEmail,
+                        fileURL: downloadURL,
+                        status: 'Pending'
+                    }).then(() => {
+                        console.log('RSVP submitted successfully.');
+                    }).catch((error) => {
+                        console.error('Error saving RSVP:', error);
+                    });
+                }
+            );
+        }
+    </script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBm_8PZcsCS6kaaOXejWJCNWop6Pd8lGGU",
+            authDomain: "wedding-af156.firebaseapp.com",
+            databaseURL: "https://wedding-af156-default-rtdb.firebaseio.com",
+            projectId: "wedding-af156",
+            storageBucket: "wedding-af156.appspot.com",
+            messagingSenderId: "54891412272",
+            appId: "1:54891412272:web:114d79cb2a146647e4a6f5"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+    </script>
 </body>
-</html>
 
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
- 
+</html>

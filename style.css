@@ -103,4 +103,19 @@ form {
 }
 #form{
     margin-top:100px;
-    text-align: center;}
+    
+    border:solid black;
+    height: 500px;
+    
+}
+.email{
+    margin-right: 0px;
+    margin-top:100px;
+}
+.password{
+    margin-left:30px;
+}.email1{
+    margin-right: 60px;
+}.password1{
+    margin-left:40px;
+}
