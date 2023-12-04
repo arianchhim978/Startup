@@ -101,11 +101,15 @@ form {
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-#form{
+#form1{
     margin-top:100px;
     
     border:solid black;
     height: 500px;
+    height:300px;
+    width: 400px;
+    margin-right: 100px;
+    
     
 }
 .email{
@@ -113,9 +117,11 @@ form {
     margin-top:100px;
 }
 .password{
-    margin-left:30px;
+    margin-right:10px;
 }.email1{
     margin-right: 60px;
 }.password1{
-    margin-left:40px;
+    margin-right:10px;
+}  #center1{
+    text-align: center;
 }
