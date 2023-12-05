@@ -14,8 +14,10 @@ header {
 }
 
 .logo {
-    max-width: 100px;
-    margin-right: 20px;
+    max-width: 150px;
+    margin-left: 20px;
+    border: solid black 2px;
+   
 }
 
 ul {
@@ -36,7 +38,7 @@ a {
     color: #333;
     font-weight: bold;
     font-size: 18px; /* Adjust font size for better mobile readability */
-    font-family: 'Dancing Script', cursive;
+ 
 }
 
 #center {
@@ -45,7 +47,7 @@ a {
 }
 
 h1 {
-    font-family: 'Dancing Script', cursive;
+    
     font-size: 24px; /* Adjust font size for better mobile readability */
     padding-top: 50px; /* Adjust padding for better mobile spacing */
 }
@@ -60,68 +62,3 @@ button {
     font-size: 16px;
 }
 
-button a {
-    color: #fff;
-    text-decoration: none;
-}
-
-#box1 {
-    height: auto; /* Let the height adjust based on content */
-    width: 100%;
-    border: solid black;
-    display: flex;
-    border-radius: 8px;
-    margin: 20px 0; /* Add space around the box */
-}
-
-#box2, #box3 {
-    height: 300px;
-    width: 100%;
-    border: solid black;
-    border-radius: 8px;
-    margin-bottom: 20px; /* Add space between the boxes */
-}
-
-form {
-    border-radius: 8px;
-}
-.carousel-container {
-    max-width: 600px;
-    margin: 20px auto;
-}
-
-.carousel img {
-    width: 100%;
-    border-radius: 8px;
-}
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-#form1{
-    margin-top:100px;
-    
-    border:solid black;
-    height: 500px;
-    height:300px;
-    width: 400px;
-    margin-right: 100px;
-    
-    
-}
-.email{
-    margin-right: 0px;
-    margin-top:100px;
-}
-.password{
-    margin-right:10px;
-}.email1{
-    margin-right: 60px;
-}.password1{
-    margin-right:10px;
-}  #center1{
-    text-align: center;
-}
