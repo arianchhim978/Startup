@@ -1,36 +1,138 @@
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css"/>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Authentication Example</title>
+    <!-- Your stylesheets (if needed) -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css"/>
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon and Fonts (if needed) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="apple-touch-icon" href="/sitefiles/12345/678/90/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:wght@100&family=Parisienne&family=Playfair+Display&family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <header>
+        <img src="plannerz.png" alt="Logo" class="logo">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="invites.html">Invites</a></li>
+            <li><a href="signup.html">Sign Up /Login</a></li>
+        </ul>
+    </header>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="apple-touch-icon" href="/sitefiles/12345/678/90/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:wght@100&family=Parisienne&family=Playfair+Display&family=Roboto:wght@100;400&display=swap" rel="stylesheet">
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style.css">
-        <link rel="manifest" href="/manifest.json">
-    </head>
-    <body> 
-        <header>
-            <img src="plannerz.png" alt="Logo" class="logo">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="invites.html">Invites</a></li>
+    <form>
+        <label class="email" name="email">
+            <input id="email" name="email" type="email" placeholder="Email">
+        </label>
+        <label class="password" name="password">
+            <input id="password" name="password" type="password" placeholder="Password">
+        </label>
+        <button data-action="register">Register</button>
+    </form>
 
-                <li><a href="signup.html">Sign Up /Login</a></li>
-                
-              
-            </ul>
-        </header>
-      
-        
-        <script src="javascript.js" async defer></script>
-    </body>
+    <form>
+        <label class="email1" name="email1">
+            <input id="email1" name="email1" type="email" placeholder="Email">
+        </label>
+        <label>
+            <input id="password1" name="password1" placeholder="Password" type="password">
+        </label>
+        <button data-action="login">Login</button>
+    </form>
+
+    <!-- Password Reset Form -->
+    <form>
+        <label class="email-reset" name="email-reset">
+            <input id="email-reset" name="email-reset" type="email" placeholder="Email">
+        </label>
+        <button data-action="reset-password">Reset Password</button>
+    </form>
+
+    <!-- Firebase scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+    apiKey: "AIzaSyA6E06Z5c9Zy3_gUPhBMfLmuY98qOolBmE",
+    authDomain: "plannerz-6326c.firebaseapp.com",
+    projectId: "plannerz-6326c",
+    storageBucket: "plannerz-6326c.appspot.com",
+    messagingSenderId: "277871240995",
+    appId: "1:277871240995:web:f20e1d81fb7396897ece96",
+    measurementId: "G-VQ66GWRF81"
+  };
+
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const registerButton = document.querySelector('button[data-action="register"]');
+            const loginButton = document.querySelector('button[data-action="login"]');
+            const resetEmailInput = document.getElementById('email-reset');
+            const resetPasswordButton = document.querySelector('button[data-action="reset-password"]');
+
+            // Event listener for registration
+            registerButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                try {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    console.log('User registered successfully');
+                } catch (error) {
+                    // Handle registration errors
+                    console.error('Registration error:', error.message);
+                }
+            });
+
+            // Event listener for login
+            loginButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    console.log('User logged in successfully');
+                } catch (error) {
+                    // Handle login errors
+                    console.error('Login error:', error.message);
+                }
+            });
+
+            // Event listener for password reset
+            resetPasswordButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const resetEmail = resetEmailInput.value;
+
+                try {
+                    // Send a password reset email
+                    await sendPasswordResetEmail(auth, resetEmail);
+                    console.log('Password reset email sent successfully');
+                } catch (error) {
+                    // Handle password reset errors
+                    console.error('Password reset error:', error.message);
+                }
+            });
+        });
+    </script>
+
+    <!-- jQuery and Slick Carousel scripts (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <!-- Your custom JavaScript file -->
+    <script src="javascript.js" async defer></script>
+</body>
 </html>
