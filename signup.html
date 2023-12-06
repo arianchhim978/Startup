@@ -22,24 +22,31 @@
             <li><a href="invites.html">Invites</a></li>
             <li><a href="signup.html">Sign Up /Login</a></li>
         </ul>
+        
     </header>
-
+    <div class='user'id="username-display"></div>
+    <div class="container"><div class="border">
+    <!-- Registration Form -->
     <form>
+        <label class="username" name="username">
+            <input id="username" name="username" type="text" placeholder="Username"><br>
+        </label>
         <label class="email" name="email">
-            <input id="email" name="email" type="email" placeholder="Email">
+            <input id="email" name="email" type="email" placeholder="Email"><br>
         </label>
         <label class="password" name="password">
-            <input id="password" name="password" type="password" placeholder="Password">
+            <input id="password" name="password" type="password" placeholder="Password"><br>
         </label>
-        <button data-action="register">Register</button>
+        <button data-action="register">Register</button><br>
     </form>
 
+    <!-- Login Form -->
     <form>
         <label class="email1" name="email1">
-            <input id="email1" name="email1" type="email" placeholder="Email">
+            <input id="email1" name="email1" type="email" placeholder="Email"><br>
         </label>
         <label>
-            <input id="password1" name="password1" placeholder="Password" type="password">
+            <input id="password1" name="password1" placeholder="Password" type="password"><br>
         </label>
         <button data-action="login">Login</button>
     </form>
@@ -49,46 +56,55 @@
         <label class="email-reset" name="email-reset">
             <input id="email-reset" name="email-reset" type="email" placeholder="Email">
         </label>
-        <button data-action="reset-password">Reset Password</button>
+        <button id="reset-password-btn" data-action="reset-password">Reset Password</button>
     </form>
 
+    <!-- Sign Out Button -->
+    <button class='user'id="sign-out-btn">Sign Out</button>
+ 
+</div></div>
     <!-- Firebase scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-analytics.js";
 
         const firebaseConfig = {
-    apiKey: "AIzaSyA6E06Z5c9Zy3_gUPhBMfLmuY98qOolBmE",
-    authDomain: "plannerz-6326c.firebaseapp.com",
-    projectId: "plannerz-6326c",
-    storageBucket: "plannerz-6326c.appspot.com",
-    messagingSenderId: "277871240995",
-    appId: "1:277871240995:web:f20e1d81fb7396897ece96",
-    measurementId: "G-VQ66GWRF81"
-  };
-
+            apiKey: "AIzaSyA6E06Z5c9Zy3_gUPhBMfLmuY98qOolBmE",
+            authDomain: "plannerz-6326c.firebaseapp.com",
+            projectId: "plannerz-6326c",
+            storageBucket: "plannerz-6326c.appspot.com",
+            messagingSenderId: "277871240995",
+            appId: "1:277871240995:web:f20e1d81fb7396897ece96",
+            measurementId: "G-VQ66GWRF81"
+        };
 
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const auth = getAuth();
 
         document.addEventListener('DOMContentLoaded', () => {
+            const usernameInput = document.getElementById('username');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
             const registerButton = document.querySelector('button[data-action="register"]');
             const loginButton = document.querySelector('button[data-action="login"]');
             const resetEmailInput = document.getElementById('email-reset');
             const resetPasswordButton = document.querySelector('button[data-action="reset-password"]');
+            const signOutButton = document.getElementById('sign-out-btn');
+            const usernameDisplay = document.getElementById('username-display');
 
             // Event listener for registration
             registerButton.addEventListener('click', async (e) => {
                 e.preventDefault();
+                const username = usernameInput.value;
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);
+                    // Update user profile with the provided username
+                    await updateProfile(auth.currentUser, { displayName: username });
                     console.log('User registered successfully');
                 } catch (error) {
                     // Handle registration errors
@@ -123,6 +139,33 @@
                 } catch (error) {
                     // Handle password reset errors
                     console.error('Password reset error:', error.message);
+                }
+            });
+
+            // Event listener for sign out
+            signOutButton.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    console.log('User signed out successfully');
+                } catch (error) {
+                    // Handle sign out errors
+                    console.error('Sign out error:', error.message);
+                }
+            });
+
+            // Check if the user is logged in and display the username
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in
+                    const username = user.displayName;
+
+                    if (username) {
+                        // Display the username
+                        usernameDisplay.textContent = `Welcome, ${username}!`;
+                    }
+                } else {
+                    // User is signed out, clear the username display
+                    usernameDisplay.textContent = '';
                 }
             });
         });

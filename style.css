@@ -61,4 +61,21 @@ button {
     cursor: pointer;
     font-size: 16px;
 }
-
+.user{
+    display:flex;
+    justify-content: end;
+    margin-right:100px;
+    margin-top:20px;
+}
+.border{
+    border:solid black 5px;
+    height: 550px;
+    width: 500px;
+    
+}
+.container{
+   margin-left: 500px;
+}
+.username{
+    margin-top:100px;
+}
