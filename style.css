@@ -1,81 +1,54 @@
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #f4f4f4;
-    padding: 10px;
+body{
+    background-color: white;
+} 
+.image{
+    height: 150px;
+}header{
     display: flex;
-    flex-wrap: wrap; /* Allow items to wrap onto multiple lines */
     justify-content: space-between;
     align-items: center;
 }
-
-.logo {
-    max-width: 150px;
-    margin-left: 20px;
-    border: solid black 2px;
-   
-}
-
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+ul{
+    margin-right:200px;
     display: flex;
-    flex-wrap: wrap;
+    list-style-type:none;
+    gap:20px;
 }
-
-li {
-    margin-right: 20px;
-    margin-bottom: 10px; /* Add space between navigation items */
-}
-
-a {
+a{
     text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    font-size: 18px; /* Adjust font size for better mobile readability */
- 
-}
-
-#center {
-    text-align: center;
-    padding: 20px;
-}
-
-h1 {
-    
-    font-size: 24px; /* Adjust font size for better mobile readability */
-    padding-top: 50px; /* Adjust padding for better mobile spacing */
-}
-
-button {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-.user{
-    display:flex;
-    justify-content: end;
-    margin-right:100px;
-    margin-top:20px;
-}
-.border{
-    border:solid black 5px;
-    height: 550px;
-    width: 500px;
-    
-}
-.container{
-   margin-left: 500px;
-}
-.username{
-    margin-top:100px;
+    font-size: 20px;
+    color:#076ae1;
+}#sign{
+    padding:10px 25px;
+    border:none;
+    border-radius: 8px;
+    margin-right:180px;
+    margin-left: ;
+    background-color: #076ae1;
+    color:white
 } 
+*{
+    margin:0;
+    padding:0;
+    font-family: 'Open Sans', sans-serif;
+}#right{
+    display: flex;
+    margin-top:100px;
+}
+.h1{
+margin-top:100px;
+color:black;
+}#left{
+  margin-left:100px;
+}.p{
+    margin-top:20px; 
+}.top{
+    margin-top:20px;
+}#button2{
+    display: flex;
+    align-items: center;
+}#link{
+
+}#white{
+    color:white;
+}
