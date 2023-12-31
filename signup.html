@@ -22,52 +22,47 @@
             <li><a href="invites.html">Invites</a></li>
             <li><a href="signup.html">Sign Up /Login</a></li>
         </ul>
+        
     </header>
-    <div class='user' id="username-display"></div>
-    <div class="container">
-        <div class="border">
-            <!-- Registration Form -->
-            <form>
-                <!-- New Name Field -->
-                <label class="name" name="name">
-                    <input id="name" name="name" type="text" placeholder="Name"><br>
-                </label>
+    <div class='user'id="username-display"></div>
+    <div class="container"><div class="border">
+    <!-- Registration Form -->
+    <form>
+        <label class="username" name="username">
+            <input id="username" name="username" type="text" placeholder="Username"><br>
+        </label>
+        <label class="email" name="email">
+            <input id="email" name="email" type="email" placeholder="Email"><br>
+        </label>
+        <label class="password" name="password">
+            <input id="password" name="password" type="password" placeholder="Password"><br>
+        </label>
+        <button data-action="register">Register</button><br>
+    </form>
 
-                <label class="username" name="username">
-                    <input id="username" name="username" type="text" placeholder="Username"><br>
-                </label>
-                <label class="email" name="email">
-                    <input id="email" name="email" type="email" placeholder="Email"><br>
-                </label>
-                <label class="password" name="password">
-                    <input id="password" name="password" type="password" placeholder="Password"><br>
-                </label>
-                <button data-action="register">Register</button><br>
-            </form>
+    <!-- Login Form -->
+    <form>
+        <label class="email1" name="email1">
+            <input id="email1" name="email1" type="email" placeholder="Email"><br>
+        </label>
+        <label>
+            <input id="password1" name="password1" placeholder="Password" type="password"><br>
+        </label>
+        <button data-action="login">Login</button>
+    </form>
 
-            <!-- Login Form -->
-            <form>
-                <label class="email1" name="email1">
-                    <input id="email1" name="email1" type="email" placeholder="Email"><br>
-                </label>
-                <label>
-                    <input id="password1" name="password1" placeholder="Password" type="password"><br>
-                </label>
-                <button data-action="login">Login</button>
-            </form>
+    <!-- Password Reset Form -->
+    <form>
+        <label class="email-reset" name="email-reset">
+            <input id="email-reset" name="email-reset" type="email" placeholder="Email">
+        </label>
+        <button id="reset-password-btn" data-action="reset-password">Reset Password</button>
+    </form>
 
-            <!-- Password Reset Form -->
-            <form>
-                <label class="email-reset" name="email-reset">
-                    <input id="email-reset" name="email-reset" type="email" placeholder="Email">
-                </label>
-                <button id="reset-password-btn" data-action="reset-password">Reset Password</button>
-            </form>
-
-            <!-- Sign Out Button -->
-            <button class='user' id="sign-out-btn">Sign Out</button>
-        </div>
-    </div>
+    <!-- Sign Out Button -->
+    <button class='user'id="sign-out-btn">Sign Out</button>
+ 
+</div></div>
     <!-- Firebase scripts -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js";
@@ -89,7 +84,6 @@
         const auth = getAuth();
 
         document.addEventListener('DOMContentLoaded', () => {
-            const nameInput = document.getElementById('name'); // New line to get the name input
             const usernameInput = document.getElementById('username');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
@@ -103,15 +97,14 @@
             // Event listener for registration
             registerButton.addEventListener('click', async (e) => {
                 e.preventDefault();
-                const name = nameInput.value; // New line to get the name value
                 const username = usernameInput.value;
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);
-                    // Update user profile with the provided username and name
-                    await updateProfile(auth.currentUser, { displayName: username, name: name });
+                    // Update user profile with the provided username
+                    await updateProfile(auth.currentUser, { displayName: username });
                     console.log('User registered successfully');
                 } catch (error) {
                     // Handle registration errors
@@ -119,7 +112,62 @@
                 }
             });
 
-            // ... (the rest of your existing JavaScript code remains unchanged) ...
+            // Event listener for login
+            loginButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    console.log('User logged in successfully');
+                } catch (error) {
+                    // Handle login errors
+                    console.error('Login error:', error.message);
+                }
+            });
+
+            // Event listener for password reset
+            resetPasswordButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const resetEmail = resetEmailInput.value;
+
+                try {
+                    // Send a password reset email
+                    await sendPasswordResetEmail(auth, resetEmail);
+                    console.log('Password reset email sent successfully');
+                } catch (error) {
+                    // Handle password reset errors
+                    console.error('Password reset error:', error.message);
+                }
+            });
+
+            // Event listener for sign out
+            signOutButton.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    console.log('User signed out successfully');
+                } catch (error) {
+                    // Handle sign out errors
+                    console.error('Sign out error:', error.message);
+                }
+            });
+
+            // Check if the user is logged in and display the username
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in
+                    const username = user.displayName;
+
+                    if (username) {
+                        // Display the username
+                        usernameDisplay.textContent = `Welcome, ${username}!`;
+                    }
+                } else {
+                    // User is signed out, clear the username display
+                    usernameDisplay.textContent = '';
+                }
+            });
         });
     </script>
 

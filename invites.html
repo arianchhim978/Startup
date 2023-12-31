@@ -2,21 +2,19 @@
 <html lang="en">
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:wght@100&family=Parisienne&family=Playfair+Display&family=Roboto:wght@100;400&display=swap" rel="stylesheet">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>RSVP Form</title>
+    <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="/manifest.json">
+
 </head>
 
 <body>
@@ -25,104 +23,59 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="invites.html">Invites</a></li>
-            <li id="user-controls" style="display:none;">
-                <a href="#">Logged in as <span id="username-display"></span></a>
-                <button onclick="signOut()">Sign Out</button>
-            </li>
-            <li id="login-controls" style="display:none;">
-                <a href="signup.html">Sign Up / Login</a>
-            </li>
+            <li><a href="signup.html">Sign Up /Login</a></li>
         </ul>
     </header>
     <div class='user' id="username-display"></div>
 
-    <form id="rsvp-form" style="display:none;">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
+    <div id="rsvp-form-container">
+        <form id="rsvp-form">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
+            <label for="message">RSVP Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
 
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" required><br>
-
-        <label for="file">File Upload:</label>
-        <input type="file" id="file" name="file" accept=".pdf, .doc, .docx"><br>
-
-        <button type="button" onclick="submitRSVP()">Submit RSVP</button>
-    </form>
-
-    <div id="result"></div>
+            <button type="submit">Send RSVP</button>
+        </form> 
+    </div>
 
     <script>
-        // Firebase Authentication
-        const auth = firebase.auth();
-        auth.onAuthStateChanged(user => {
-            const userControls = document.getElementById('user-controls');
-            const loginControls = document.getElementById('login-controls');
-            const rsvpForm = document.getElementById('rsvp-form');
+        $(document).ready(function () {
+            const sendRSVP = (phoneNumber, message) => {
+                const apiKey = 'f53efd0e68e3b5834f8a9d742205f58a';
+                const apiEndpoint = 'https://api.transmitsms.com/send-sms.json';
 
-            if (user) {
-                userControls.style.display = 'block';
-                loginControls.style.display = 'none';
-                document.getElementById('username-display').textContent = user.displayName;
+                $.ajax({
+                    type: 'POST',
+                    url: apiEndpoint,
+                    data: {
+                        message: message,
+                        to: phoneNumber,
+                        message_id: 'unique_message_id', // Provide a unique message ID
+                        api_key: apiKey,
+                    },
+                    success: function (data) {
+                        console.log('RSVP message sent:', data);
+                    },
+                    error: function (error) {
+                        console.error('Error sending RSVP:', error);
+                    },
+                });
+            };
 
-                // Enable the RSVP form when the user is signed in
-                rsvpForm.style.display = 'block';
-            } else {
-                userControls.style.display = 'none';
-                loginControls.style.display = 'block';
+            const rsvpForm = $('#rsvp-form');
+            if (rsvpForm) {
+                rsvpForm.submit(function (event) {
+                    event.preventDefault();
 
-                // Disable the RSVP form when the user is not signed in
-                rsvpForm.style.display = 'none';
+                    const phoneNumber = $('#phoneNumber').val();
+                    const message = $('#message').val();
+
+                    sendRSVP(phoneNumber, message);
+                });
             }
         });
-
-        function signOut() {
-            auth.signOut();
-        }
-
-        function submitRSVP() {
-            const user = auth.currentUser;
-
-            if (user) {
-                // User is logged in, proceed with the RSVP submission
-                const formData = new FormData(document.getElementById('rsvp-form'));
-                const name = formData.get('name');
-                const email = formData.get('email');
-                const phone = formData.get('phone');
-                const file = formData.get('file');
-
-                // Add your logic to send RSVP data (Firebase or other services)
-
-                // Display result (for demonstration purposes)
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `<p>RSVP submitted for ${name} with email ${email} and phone number ${phone}</p>`;
-            } else {
-                alert('You must be logged in to submit an RSVP.');
-            }
-        }
-    </script>
-
-    <!-- Include Firebase SDK and configuration script -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-firestore.js"></script>
-
-    <script>
-        // Your Firebase configuration
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID",
-            measurementId: "YOUR_MEASUREMENT_ID"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
     </script>
 </body>
 
